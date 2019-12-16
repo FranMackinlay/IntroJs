@@ -28,7 +28,14 @@ const numberToRoman = number => {
 };
 const romanToNumber = romanNumber => {
   let romanValue = romanNumber.toUpperCase(),
-    romanKeys = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 },
+    romanKeys = { 
+      I: 1,
+      V: 5,
+      X: 10,
+      L: 50,
+      C: 100,
+      D: 500,
+      M: 1000 },
     number = 0,
     i = romanNumber.length;
   while (i--) {
@@ -41,7 +48,21 @@ const romanToNumber = romanNumber => {
   return number;
 };
 
-const romanString = numberToRoman(56);
+const isRomanValid = romanValid => {
+  
+  if(romanValid.toUpperCase() == numberToRoman(romanToNumber(romanValid))) {
+    return true;
+  } else {
+    return false;
+  }
+}
+const romanString = numberToRoman(504);
 console.log(romanString);
 console.log('');
-console.log(romanToNumber(romanString));
+if(romanString === 'DIV'){
+  console.log(`${romanToNumber(romanString)} Gateway Timeout`)
+} else {
+  console.log(romanToNumber(romanString));
+}
+console.log('');
+console.log(isRomanValid('DIV'));
