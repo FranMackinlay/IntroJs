@@ -6,57 +6,72 @@ class FooBarQuix {
     if (number < 1 || number > 100) {
       this.result = 'Number out of bounds! Try with number between 1-100.'
     } else {
-      this.isFooRemainder(number);
-      this.isBarRemainder(number);
-      this.isQuixRemainder(number);
-      this.isNumberRepeated(number);
-      if (this.result == '') {
-        this.result = number;
+      for (let i = 1; i <= number; i++) {
+        this.isFooRemainder(i);
+        this.isBarRemainder(i);
+        this.isQuixRemainder(i);
+        this.isNumberRepeated(i);
+        if (this.result == undefined ||
+            typeof this.result === typeof i) {
+          this.result = i;
+          console.log(this.result);
+        } else {
+          console.log(this.result);
+        }
+        this.result = undefined;
+        // return console.log(this.result);
       }
     }
-    return this.result;
+    
   }
-  isFooRemainder(number) {
-    if (number % 3 === 0) {
+  isFooRemainder(i) {
+    if (i % 3 === 0) {
       this.result = 'Foo';
+      // console.log(this.result);
     } else if (this.result == undefined) {
-      this.result = '';
+      // this.result = '';
     }
 
-    return this.result;
+    // return console.log(this.result);
   }
-  isBarRemainder(number) {
-    if (number % 5 === 0) {
-      this.result = this.result + 'Bar';
+  isBarRemainder(i) {
+    if (i % 5 === 0) {
+      this.result = 'Bar';
     } else {
-      this.result += '';
+      // this.result = '';
     }
 
-    return this.result;
+    // return console.log(this.result);
   }
-  isQuixRemainder(number) {
-    if (number % 7 === 0) {
-      this.result = this.result.concat('Quix');
+  isQuixRemainder(i) {
+    if (i % 7 === 0) {
+      this.result = 'Quix';
     } else {
-      this.result += '';
+      // this.result = '';
     }
     
-    return this.result;
+    // return console.log(this.result);
   }
-  isNumberRepeated(number) {
-    const numArray = number.toString().split('');
+  isNumberRepeated(i) {
+    const numArray = i.toString().split('');
     const numFinal = numArray.map(Number);
     numFinal.forEach(element => {
       if (element === 3) {
         this.result += 'Foo';
+        
       } else if (element === 5) {
         this.result += 'Bar';
+        
       } else if (element === 7) {
         this.result += 'Quix';
+        
       }
+      
+      
     });
-    return this.result;
+    // return this.result;
   }
+
 }
 const primeraKata = new FooBarQuix();
-console.log(primeraKata.isFooBarQuix(75));
+primeraKata.isFooBarQuix(10);
