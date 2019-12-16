@@ -10,7 +10,7 @@ class FooBarQuix {
       this.isBarRemainder(number);
       this.isQuixRemainder(number);
       this.isNumberRepeated(number);
-      if (this.result == undefined) {
+      if (this.result == '') {
         this.result = number;
       }
     }
