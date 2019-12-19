@@ -62,7 +62,15 @@ class PokerGame {
   //   return deck;
   // }
   whoWins(hand1, hand2) {
-    this.hasPair(hand1, hand2);
+    this.hasFullHouse(hand1, hand2);
+    if (this.result != undefined) {
+      return this.result;
+    }
+    this.hasThreeOfKind(hand1, hand2);
+    if (this.result != undefined) {
+      return this.result;
+    }
+    this.hasPairs(hand1, hand2);
     if (this.result != undefined) {
       return this.result;
     }
@@ -116,7 +124,7 @@ class PokerGame {
     }
   }
 
-  hasPair(hand1, hand2) {
+  hasPairs(hand1, hand2) {
     const hand1Array = hand1.map(char => {
       if (char.charAt(1) == '0') {
         return char.charAt(0) + char.charAt(1);
@@ -213,15 +221,108 @@ class PokerGame {
       return (str = str.replace('14', 'A'));
     } else return str;
   }
+  hasThreeOfKind(hand1, hand2) {
+    const hand1Array = hand1.map(char => {
+      if (char.charAt(1) == '0') {
+        return char.charAt(0) + char.charAt(1);
+      } else if (char.charAt(0) == 'J') {
+        return (char = '11');
+      } else if (char.charAt(0) == 'Q') {
+        return (char = '12');
+      } else if (char.charAt(0) == 'K') {
+        return (char = '13');
+      } else if (char.charAt(0) == 'A') {
+        return (char = '14');
+      }
+      return char.charAt(0);
+    });
+    const hand2Array = hand2.map(char => {
+      if (char.charAt(1) == '0') {
+        return char.charAt(0) + char.charAt(1);
+      } else if (char.charAt(0) == 'J') {
+        return (char = '11');
+      } else if (char.charAt(0) == 'Q') {
+        return (char = '12');
+      } else if (char.charAt(0) == 'K') {
+        return (char = '13');
+      } else if (char.charAt(0) == 'A') {
+        return (char = '14');
+      }
+      return char.charAt(0);
+    });
 
+    const findToak = array => {
+      let object = {};
+      let toak = [];
+      let toakWinner;
 
-  hasThreeOfKind(hand1, hand2) {}
+      array.forEach(function(item) {
+        if (!object[item]) object[item] = 0;
+        object[item] += 1;
+      });
+
+      for (let prop in object) {
+        if (object[prop] == 3) {
+          toak.push(prop);
+          toak.push(prop);
+          toak.push(prop);
+        }
+      }
+      if (toak.length == 3) {
+        toakWinner = `Trio de ${toak[0]}!`;
+      } else toakWinner = '0';
+
+      return toakWinner;
+    };
+
+    let hasHand1Toak = findToak(hand1Array);
+    let hasHand2Toak = findToak(hand2Array);
+    hasHand1Toak = this.convertNumberToLetter(hasHand1Toak);
+    hasHand2Toak = this.convertNumberToLetter(hasHand2Toak);
+
+    if (hasHand1Toak.includes('Trio') && hasHand2Toak == '0') {
+      return (this.result = `Jugador 1 Gana: ${hasHand1Toak}`);
+    } else if (hasHand2Toak.includes('Trio') && hasHand1Toak == '0') {
+      return (this.result = `Jugador 2 Gana: ${hasHand2Toak}`);
+    } else if (hasHand1Toak.includes('Trio') && hasHand2Toak.includes('Trio')) {
+      return (this.result = 'Hay un empate de trio.');
+    }
+
+  }
 
   hasStraight(hand1, hand2) {}
 
   hasFlush(hand1, hand2) {}
 
-  hasFullHouse(hand1, hand2) {}
+  hasFullHouse(hand1, hand2) {
+    let counterPlayer1 = 0;
+    let counterPlayer2 = 0;
+    this.hasPairs(hand1, hand2);
+    if (this.result.includes('Jugador 1')) {
+      counterPlayer1++;
+    } else if (this.result.includes('Jugador 2')) {
+      counterPlayer2++;
+    } else if (this.result.includes('empate')) {
+      counterPlayer1++;
+      counterPlayer2++;
+    }
+    this.hasThreeOfKind(hand1, hand2);
+    if (this.result.includes('Jugador 1')) {
+      counterPlayer1++;
+    } else if (this.result.includes('Jugador 2')) {
+      counterPlayer2++;
+    } else if (this.result.includes('empate')) {
+      counterPlayer1++;
+      counterPlayer2++;
+    }
+    if (counterPlayer1 == 2 && counterPlayer2 == 2) {
+      return this.result = 'Hay un empate de Full House';
+    } else if (counterPlayer1 == 2) {
+      return this.result = 'Jugador 1 Gana: Full House';
+    } else if (counterPlayer2 == 2) {
+      return this.result = 'Jugador 2 Gana: Full House';
+    }
+  }
 
   hasPoker(hand1, hand2) {}
 
@@ -229,7 +330,7 @@ class PokerGame {
 }
 
 let game = new PokerGame(
-  ['9H', 'JS', 'QS', 'KC', '6C'],
-  ['10S', '4S', '3D', 'AC', '9D']
+  ['9H', '9S', '9S', '7C', '7C'],
+  ['10S', 'AS', 'AD', 'AC', '10D']
 );
 game.play();
