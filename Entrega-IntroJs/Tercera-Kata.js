@@ -62,6 +62,10 @@ class PokerGame {
   //   return deck;
   // }
   whoWins(hand1, hand2) {
+    this.hasPoker(hand1, hand2);
+    if (this.result != undefined) {
+      return this.result;
+    }
     this.hasFullHouse(hand1, hand2);
     if (this.result != undefined) {
       return this.result;
@@ -285,7 +289,7 @@ class PokerGame {
     } else if (hasHand2Toak.includes('Trio') && hasHand1Toak == '0') {
       return (this.result = `Jugador 2 Gana: ${hasHand2Toak}`);
     } else if (hasHand1Toak.includes('Trio') && hasHand2Toak.includes('Trio')) {
-      return (this.result = 'Hay un empate de trio.');
+      return (this.result = 'Hay un empate de Trio.');
     }
 
   }
@@ -324,13 +328,81 @@ class PokerGame {
     }
   }
 
-  hasPoker(hand1, hand2) {}
+  hasPoker(hand1, hand2) {
+    const hand1Array = hand1.map(char => {
+      if (char.charAt(1) == '0') {
+        return char.charAt(0) + char.charAt(1);
+      } else if (char.charAt(0) == 'J') {
+        return (char = '11');
+      } else if (char.charAt(0) == 'Q') {
+        return (char = '12');
+      } else if (char.charAt(0) == 'K') {
+        return (char = '13');
+      } else if (char.charAt(0) == 'A') {
+        return (char = '14');
+      }
+      return char.charAt(0);
+    });
+    const hand2Array = hand2.map(char => {
+      if (char.charAt(1) == '0') {
+        return char.charAt(0) + char.charAt(1);
+      } else if (char.charAt(0) == 'J') {
+        return (char = '11');
+      } else if (char.charAt(0) == 'Q') {
+        return (char = '12');
+      } else if (char.charAt(0) == 'K') {
+        return (char = '13');
+      } else if (char.charAt(0) == 'A') {
+        return (char = '14');
+      }
+      return char.charAt(0);
+    });
+
+    const findPoker = array => {
+      let object = {};
+      let poker = [];
+      let pokerWinner;
+
+      array.forEach(function(item) {
+        if (!object[item]) object[item] = 0;
+        object[item] += 1;
+      });
+
+      for (let prop in object) {
+        if (object[prop] == 4) {
+          poker.push(prop);
+          poker.push(prop);
+          poker.push(prop);
+          poker.push(prop);
+        }
+      }
+      if (poker.length == 4) {
+        pokerWinner = `Poker de ${poker[0]}!`;
+      } else pokerWinner = '0';
+
+      return pokerWinner;
+    };
+
+    let hasHand1Poker = findPoker(hand1Array);
+    let hasHand2Poker = findPoker(hand2Array);
+    hasHand1Poker = this.convertNumberToLetter(hasHand1Poker);
+    hasHand2Poker = this.convertNumberToLetter(hasHand2Poker);
+
+    if (hasHand1Poker.includes('Poker') && hasHand2Poker == '0') {
+      return (this.result = `Jugador 1 Gana: ${hasHand1Poker}`);
+    } else if (hasHand2Poker.includes('Poker') && hasHand1Poker == '0') {
+      return (this.result = `Jugador 2 Gana: ${hasHand2Poker}`);
+    } else if (hasHand1Poker.includes('Poker') && hasHand2Poker.includes('Poker')) {
+      return (this.result = 'Hay un empate de Poker.');
+    }
+
+  }
 
   hasStraightFlush(hand1, hand2) {}
 }
 
 let game = new PokerGame(
   ['9H', '9S', '9S', '7C', '7C'],
-  ['10S', 'AS', 'AD', 'AC', '10D']
+  ['AS', 'AS', 'AD', 'AC', '10D']
 );
 game.play();
