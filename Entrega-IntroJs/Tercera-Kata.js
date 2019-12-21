@@ -62,6 +62,10 @@ class PokerGame {
   //   return deck;
   // }
   whoWins(hand1, hand2) {
+    this.hasStraight(hand1, hand2);
+    if (this.result != undefined) {
+      return this.result;
+    }
     this.hasPoker(hand1, hand2);
     if (this.result != undefined) {
       return this.result;
@@ -291,10 +295,74 @@ class PokerGame {
     } else if (hasHand1Toak.includes('Trio') && hasHand2Toak.includes('Trio')) {
       return (this.result = 'Hay un empate de Trio.');
     }
-
   }
 
-  hasStraight(hand1, hand2) {}
+  hasStraight(hand1, hand2) {
+    const hand1Array = hand1.map(char => {
+      if (char.charAt(1) == '0') {
+        return char.charAt(0) + char.charAt(1);
+      } else if (char.charAt(0) == 'J') {
+        return (char = '11');
+      } else if (char.charAt(0) == 'Q') {
+        return (char = '12');
+      } else if (char.charAt(0) == 'K') {
+        return (char = '13');
+      } else if (char.charAt(0) == 'A') {
+        return (char = '14');
+      }
+      return char.charAt(0);
+    });
+    const hand2Array = hand2.map(char => {
+      if (char.charAt(1) == '0') {
+        return char.charAt(0) + char.charAt(1);
+      } else if (char.charAt(0) == 'J') {
+        return (char = '11');
+      } else if (char.charAt(0) == 'Q') {
+        return (char = '12');
+      } else if (char.charAt(0) == 'K') {
+        return (char = '13');
+      } else if (char.charAt(0) == 'A') {
+        return (char = '14');
+      }
+      return char.charAt(0);
+    });
+    const sortedHand1Array = hand1Array.sort((a, b) => a - b);
+    const sortedHand2Array = hand2Array.sort((a, b) => a - b);
+
+    let counterHand1 = 0;
+    let counterHand2 = 0;
+
+    const numHand1Array = sortedHand1Array.map(Number);
+    const numHand2Array = sortedHand2Array.map(Number);
+
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    let sumHand1 = numHand1Array.reduce(reducer);
+    let sumHand2 = numHand2Array.reduce(reducer);
+
+    for (let i = 0; i < 5; i++) {
+      if (numHand1Array[i] + 1 == numHand1Array[i + 1] &&
+        numHand2Array[i] + 1 == numHand2Array[i + 1]) {
+        counterHand1++;
+        counterHand2++;
+      } else if (numHand1Array[i] + 1 == numHand1Array[i + 1]) {
+        counterHand1++;
+      } else if (numHand2Array[i] + 1 == numHand2Array[i + 1]) {
+        counterHand2++;
+      }
+    }
+
+    if (counterHand1 == 4 && counterHand2 == 4) {
+      if (sumHand1 > sumHand2) {
+        return this.result = 'Jugador 1 Gana: Escalera!';
+      } else if (sumHand1 < sumHand2) {
+        return this.result = 'Jugador 2 Gana: Escalera!';
+      }
+    } else if (counterHand1 == 4) {
+      return this.result = 'Jugador 1 Gana: Escalera!';
+    } else if (counterHand2 == 4) {
+      return this.result = 'Jugador 2 Gana: Escalera!';
+    }
+  }
 
   hasFlush(hand1, hand2) {}
 
@@ -320,11 +388,11 @@ class PokerGame {
       counterPlayer2++;
     }
     if (counterPlayer1 == 2 && counterPlayer2 == 2) {
-      return this.result = 'Hay un empate de Full House';
+      return (this.result = 'Hay un empate de Full House');
     } else if (counterPlayer1 == 2) {
-      return this.result = 'Jugador 1 Gana: Full House';
+      return (this.result = 'Jugador 1 Gana: Full House');
     } else if (counterPlayer2 == 2) {
-      return this.result = 'Jugador 2 Gana: Full House';
+      return (this.result = 'Jugador 2 Gana: Full House');
     }
   }
 
@@ -392,17 +460,19 @@ class PokerGame {
       return (this.result = `Jugador 1 Gana: ${hasHand1Poker}`);
     } else if (hasHand2Poker.includes('Poker') && hasHand1Poker == '0') {
       return (this.result = `Jugador 2 Gana: ${hasHand2Poker}`);
-    } else if (hasHand1Poker.includes('Poker') && hasHand2Poker.includes('Poker')) {
+    } else if (
+      hasHand1Poker.includes('Poker') &&
+      hasHand2Poker.includes('Poker')
+    ) {
       return (this.result = 'Hay un empate de Poker.');
     }
-
   }
 
   hasStraightFlush(hand1, hand2) {}
 }
 
 let game = new PokerGame(
-  ['9H', '9S', '9S', '7C', '7C'],
-  ['AS', 'AS', 'AD', 'AC', '10D']
+  ['2H', '4S', '3S', '6C', '5C'],
+  ['AS', 'QS', 'KD', 'JC', '10D']
 );
 game.play();
