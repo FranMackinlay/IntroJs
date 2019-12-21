@@ -7,7 +7,6 @@ class PokerGame {
   play() {
     const deck = this.deck();
     const shuffledDeck1 = this.shuffle(deck);
-    // console.log(shuffledDeck1);
     for (let i = 1; i <= 5; i++) {
       this.hand1.push(shuffledDeck1[i]);
     }
