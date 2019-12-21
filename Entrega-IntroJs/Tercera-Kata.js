@@ -11,16 +11,19 @@ class PokerGame {
     for (let i = 1; i <= 5; i++) {
       this.hand1.push(shuffledDeck1[i]);
     }
-    console.log(this.hand1);
+    console.log(`Cartas del Jugador 1: ${this.hand1}.`);
     const shuffledDeck2 = this.shuffle(deck);
-    // console.log('==========================')
+    console.log();
     for (let i = 1; i <= 5; i++) {
       this.hand2.push(shuffledDeck2[i]);
     }
-    console.log(this.hand2);
-    // this.whoWins(this.player1, this.player2);
+    console.log(`Cartas del Jugador 2: ${this.hand2}.`);
     this.whoWins(this.hand1, this.hand2);
+    console.log();
+    console.log('==========================')
+    console.log();
     console.log(this.result);
+    console.log();
   }
 
   deck() {
