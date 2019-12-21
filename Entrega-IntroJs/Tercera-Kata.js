@@ -2,7 +2,7 @@ class PokerGame {
   constructor(hand1, hand2) {
     this.hand1 = hand1;
     this.hand2 = hand2;
-    this.result;
+    this.result = '';
   }
   play(hand1, hand2) {
     // const deck = this.deck();
@@ -63,23 +63,23 @@ class PokerGame {
   // }
   whoWins(hand1, hand2) {
     this.hasStraight(hand1, hand2);
-    if (this.result != undefined) {
+    if (this.result != '') {
       return this.result;
     }
     this.hasPoker(hand1, hand2);
-    if (this.result != undefined) {
+    if (this.result != '') {
       return this.result;
     }
     this.hasFullHouse(hand1, hand2);
-    if (this.result != undefined) {
+    if (this.result != '') {
       return this.result;
     }
     this.hasThreeOfKind(hand1, hand2);
-    if (this.result != undefined) {
+    if (this.result != '') {
       return this.result;
     }
     this.hasPairs(hand1, hand2);
-    if (this.result != undefined) {
+    if (this.result != '') {
       return this.result;
     }
     this.hasHighCard(hand1, hand2);
@@ -117,11 +117,6 @@ class PokerGame {
     });
     const hand1Max = Math.max.apply(Math, hand1Array);
     const hand2Max = Math.max.apply(Math, hand2Array);
-    // console.log(hand1Max);
-    // console.log(hand2Max);
-
-    // console.log(hand1Array);
-    // console.log(hand2Array);
 
     if (hand1Max > hand2Max) {
       return (this.result = 'Jugador 1 Gana: carta más alta');
@@ -200,12 +195,38 @@ class PokerGame {
     } else if (hasHand2Pairs.includes('Doble') && hasHand1Pairs == '0') {
       return (this.result = `Jugador 2 Gana: ${hasHand2Pairs}`);
     } else if (hasHand1Pairs.includes('Un') && hasHand2Pairs.includes('Un')) {
-      return (this.result = 'Hay un empate de par.');
+
+      const numHand1Array = hand1Array.map(Number);
+      const numHand2Array = hand2Array.map(Number);
+
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      let sumHand1 = numHand1Array.reduce(reducer);
+      let sumHand2 = numHand2Array.reduce(reducer);
+
+      if (sumHand1 > sumHand2) {
+        return (this.result = 'Jugador 1 Gana: Par!');
+      } else if (sumHand1 < sumHand2) {
+        return (this.result = 'Jugador 2 Gana: Par!');
+      }
+
+      // return (this.result = 'Hay un empate de par.');
     } else if (
       hasHand1Pairs.includes('Doble') &&
       hasHand2Pairs.includes('Doble')
     ) {
-      return (this.result = 'Hay un empate de doble par.');
+      const numHand1Array = hand1Array.map(Number);
+      const numHand2Array = hand2Array.map(Number);
+
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      let sumHand1 = numHand1Array.reduce(reducer);
+      let sumHand2 = numHand2Array.reduce(reducer);
+
+      if (sumHand1 > sumHand2) {
+        return (this.result = 'Jugador 1 Gana: Doble Par!');
+      } else if (sumHand1 < sumHand2) {
+        return (this.result = 'Jugador 2 Gana: Doble Par!');
+      }
+      // return (this.result = 'Hay un empate de doble par.');
     } else if (
       hasHand1Pairs.includes('Doble') &&
       hasHand2Pairs.includes('Un')
@@ -289,11 +310,25 @@ class PokerGame {
     hasHand2Toak = this.convertNumberToLetter(hasHand2Toak);
 
     if (hasHand1Toak.includes('Trio') && hasHand2Toak == '0') {
-      return (this.result = `Jugador 1 Gana: ${hasHand1Toak}`);
+      return (this.result = `Jugador 1 Gana: Trio!`);
     } else if (hasHand2Toak.includes('Trio') && hasHand1Toak == '0') {
-      return (this.result = `Jugador 2 Gana: ${hasHand2Toak}`);
+      return (this.result = `Jugador 2 Gana: Trio!`);
     } else if (hasHand1Toak.includes('Trio') && hasHand2Toak.includes('Trio')) {
-      return (this.result = 'Hay un empate de Trio.');
+
+      const numHand1Array = hand1Array.map(Number);
+      const numHand2Array = hand2Array.map(Number);
+
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      let sumHand1 = numHand1Array.reduce(reducer);
+      let sumHand2 = numHand2Array.reduce(reducer);
+
+      if (sumHand1 > sumHand2) {
+        return (this.result = 'Jugador 1 Gana: Trio!');
+      } else if (sumHand1 < sumHand2) {
+        return (this.result = 'Jugador 2 Gana: Trio!');
+      }
+      
+      // return (this.result = 'Hay un empate de Trio.');
     }
   }
 
@@ -340,8 +375,10 @@ class PokerGame {
     let sumHand2 = numHand2Array.reduce(reducer);
 
     for (let i = 0; i < 5; i++) {
-      if (numHand1Array[i] + 1 == numHand1Array[i + 1] &&
-        numHand2Array[i] + 1 == numHand2Array[i + 1]) {
+      if (
+        numHand1Array[i] + 1 == numHand1Array[i + 1] &&
+        numHand2Array[i] + 1 == numHand2Array[i + 1]
+      ) {
         counterHand1++;
         counterHand2++;
       } else if (numHand1Array[i] + 1 == numHand1Array[i + 1]) {
@@ -353,14 +390,14 @@ class PokerGame {
 
     if (counterHand1 == 4 && counterHand2 == 4) {
       if (sumHand1 > sumHand2) {
-        return this.result = 'Jugador 1 Gana: Escalera!';
+        return (this.result = 'Jugador 1 Gana: Escalera!');
       } else if (sumHand1 < sumHand2) {
-        return this.result = 'Jugador 2 Gana: Escalera!';
+        return (this.result = 'Jugador 2 Gana: Escalera!');
       }
     } else if (counterHand1 == 4) {
-      return this.result = 'Jugador 1 Gana: Escalera!';
+      return (this.result = 'Jugador 1 Gana: Escalera!');
     } else if (counterHand2 == 4) {
-      return this.result = 'Jugador 2 Gana: Escalera!';
+      return (this.result = 'Jugador 2 Gana: Escalera!');
     }
   }
 
@@ -379,16 +416,28 @@ class PokerGame {
       counterPlayer2++;
     }
     this.hasThreeOfKind(hand1, hand2);
-    if (this.result.includes('Jugador 1')) {
+    if (this.result.includes('Jugador 1 Gana: Trio!')) {
       counterPlayer1++;
-    } else if (this.result.includes('Jugador 2')) {
+    } else if (this.result.includes('Jugador 2 Gana: Trio!')) {
       counterPlayer2++;
     } else if (this.result.includes('empate')) {
       counterPlayer1++;
       counterPlayer2++;
     }
     if (counterPlayer1 == 2 && counterPlayer2 == 2) {
-      return (this.result = 'Hay un empate de Full House');
+
+      const numHand1Array = hand1Array.map(Number);
+      const numHand2Array = hand2Array.map(Number);
+
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      let sumHand1 = numHand1Array.reduce(reducer);
+      let sumHand2 = numHand2Array.reduce(reducer);
+
+      if (sumHand1 > sumHand2) {
+        return (this.result = 'Jugador 1 Gana: Full House!');
+      } else if (sumHand1 < sumHand2) {
+        return (this.result = 'Jugador 2 Gana: Full House!');
+      }
     } else if (counterPlayer1 == 2) {
       return (this.result = 'Jugador 1 Gana: Full House');
     } else if (counterPlayer2 == 2) {
@@ -464,7 +513,20 @@ class PokerGame {
       hasHand1Poker.includes('Poker') &&
       hasHand2Poker.includes('Poker')
     ) {
-      return (this.result = 'Hay un empate de Poker.');
+
+      const numHand1Array = hand1Array.map(Number);
+      const numHand2Array = hand2Array.map(Number);
+
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      let sumHand1 = numHand1Array.reduce(reducer);
+      let sumHand2 = numHand2Array.reduce(reducer);
+
+      if (sumHand1 > sumHand2) {
+        return (this.result = 'Jugador 1 Gana: Poker!');
+      } else if (sumHand1 < sumHand2) {
+        return (this.result = 'Jugador 2 Gana: Poker!');
+      }
+      
     }
   }
 
@@ -472,7 +534,7 @@ class PokerGame {
 }
 
 let game = new PokerGame(
-  ['2H', '4S', '3S', '6C', '5C'],
-  ['AS', 'QS', 'KD', 'JC', '10D']
+  ['9H', '6S', '6S', '6C', '6C'],
+  ['JS', '6S', '6D', '6C', '6D']
 );
 game.play();
