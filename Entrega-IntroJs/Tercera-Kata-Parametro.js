@@ -1,66 +1,66 @@
 class PokerGame {
   constructor(hand1, hand2) {
-    this.hand1 = [];
-    this.hand2 = [];
+    this.hand1 = hand1;
+    this.hand2 = hand2;
     this.result = '';
   }
   play() {
-    const deck = this.deck();
-    const shuffledDeck1 = this.shuffle(deck);
-    // console.log(shuffledDeck1);
-    for (let i = 1; i <= 5; i++) {
-      this.hand1.push(shuffledDeck1[i]);
-    }
-    console.log(this.hand1);
-    const shuffledDeck2 = this.shuffle(deck);
-    // console.log('==========================')
-    for (let i = 1; i <= 5; i++) {
-      this.hand2.push(shuffledDeck2[i]);
-    }
-    console.log(this.hand2);
-    // this.whoWins(this.player1, this.player2);
+    // const deck = this.deck();
+    // const shuffledDeck1 = this.shuffle(deck);
+    // // console.log(shuffledDeck1);
+    // for (let i = 1; i <= 5; i++) {
+    //   this.hand1.push(shuffledDeck1[i]);
+    // }
+    // console.log(this.hand1);
+    // const shuffledDeck2 = this.shuffle(deck);
+    // // console.log('==========================')
+    // for (let i = 1; i <= 5; i++) {
+    //   this.hand2.push(shuffledDeck2[i]);
+    // }
+    // console.log(this.hand2);
+    // // this.whoWins(this.player1, this.player2);
     this.whoWins(this.hand1, this.hand2);
     console.log(this.result);
   }
 
-  deck() {
-    const suits = ['S', 'D', 'C', 'H'];
-    const values = [
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      'J',
-      'Q',
-      'K',
-      'A'
-    ];
-    const deck = [];
+  // deck() {
+  //   const suits = ['S', 'D', 'C', 'H'];
+  //   const values = [
+  //     '2',
+  //     '3',
+  //     '4',
+  //     '5',
+  //     '6',
+  //     '7',
+  //     '8',
+  //     '9',
+  //     '10',
+  //     'J',
+  //     'Q',
+  //     'K',
+  //     'A'
+  //   ];
+  //   const deck = [];
 
-    for (let i = 0; i < suits.length; i++) {
-  	  for (let x = 0; x < values.length; x++) {
-  		  let card = values[x] + suits[i];
-  		  deck.push(card);
-  	  }
-    }
-    return deck;
-  }
-  shuffle(deck) {
-    for (var i = 0; i < 1000; i++) {
-      const location1 = Math.floor((Math.random() * deck.length));
-      const location2 = Math.floor((Math.random() * deck.length));
-      const temp = deck[location1];
+  //   for (let i = 0; i < suits.length; i++) {
+  // 	  for (let x = 0; x < values.length; x++) {
+  // 		  let card = values[x] + suits[i];
+  // 		  deck.push(card);
+  // 	  }
+  //   }
+  //   return deck;
+  // }
+  // shuffle(deck) {
+  //   for (var i = 0; i < 1000; i++) {
+  //     const location1 = Math.floor((Math.random() * deck.length));
+  //     const location2 = Math.floor((Math.random() * deck.length));
+  //     const temp = deck[location1];
 
-      deck[location1] = deck[location2];
-      deck[location2] = temp;
-    }
-    return deck;
-  }
+  //     deck[location1] = deck[location2];
+  //     deck[location2] = temp;
+  //   }
+  //   return deck;
+  // }
   whoWins(hand1, hand2) {
     this.hasStraightFlush(hand1, hand2);
     if (this.result != '') {
@@ -439,12 +439,14 @@ class PokerGame {
     const hand1Suits = hand1.map(char => {
       if (char.charAt(1) == '0') {
         return char.charAt(2);
-      } else return char[1];
+      } else return char.charAt(1);
     });
     const hand2Suits = hand2.map(char => {
       if (char.charAt(1) == '0') {
         return char.charAt(2);
-      } else return char[1];
+      } else {
+        return char.charAt(1);
+      }
     });
 
     const findFlush = array => {
@@ -658,13 +660,13 @@ class PokerGame {
       counterPlayer1++;
     } else if (this.result.includes('Jugador 2')) {
       counterPlayer2++;
-    } 
+    }
     this.hasFlush(hand1, hand2);
     if (this.result.includes('Jugador 1 Gana: Flush!')) {
       counterPlayer1++;
     } else if (this.result.includes('Jugador 2 Gana: Flush!')) {
       counterPlayer2++;
-    } 
+    }
     if (counterPlayer1 == 1 && counterPlayer2 == 1) {
       const numHand1Array = hand1Array.map(Number);
       const numHand2Array = hand2Array.map(Number);
@@ -686,5 +688,8 @@ class PokerGame {
   }
 }
 
-let game = new PokerGame();
+let game = new PokerGame(
+  ['2S', 'JS', 'KH', '8D', 'AH'],
+  ['KC', 'AD', '9C', '7C', 'QC']
+);
 game.play();
